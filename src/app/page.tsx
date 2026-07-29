@@ -63,36 +63,42 @@ const FEATURES = [
   {
     icon: Droplets,
     title: "Área de Banho",
+    image: "/images/diferenciais/area-banho.jpg",
     description:
       "Piscina natural e área de banho com águas cristalinas, perfeita para relaxar e se refrescar nos dias quentes, cercada pela natureza exuberante.",
   },
   {
     icon: Home,
     title: "Quiosques",
+    image: "/images/diferenciais/quiosques.jpg",
     description:
       "Quiosques amplos e bem estruturados, ideais para reunir família e amigos em um ambiente agradável ao ar livre com sombra e conforto.",
   },
   {
     icon: Home,
     title: "Banheiros Limpos",
+    image: "/images/diferenciais/banheiros.jpg",
     description:
       "Banheiros completos e sempre limpos, com estrutura adequada para garantir conforto e bem-estar a todos os visitantes do balneário.",
   },
   {
     icon: TreePine,
     title: "Contato com a Natureza",
+    image: "/images/diferenciais/natureza.jpg",
     description:
       "Ampla área verde com árvores nativas e paisagem preservada, proporcionando uma experiência única de tranquilidade em harmonia com o meio ambiente.",
   },
   {
     icon: Users,
     title: "Espaço para Eventos",
+    image: "/images/diferenciais/eventos.jpg",
     description:
       "Área ampla para realização de festas, eventos corporativos, reuniões familiares e comemorações especiais, com capacidade para grandes grupos.",
   },
   {
     icon: Sun,
     title: "Lazer ao Ar Livre",
+    image: "/images/diferenciais/lazer.jpg",
     description:
       "Espaços abertos para atividades diversas, jogos, descanso e contemplação da paisagem natural, ideais para todas as idades.",
   },
@@ -390,16 +396,30 @@ export default function HomePage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {FEATURES.map((feature, index) => (
               <FadeInSection key={feature.title} delay={index * 0.08}>
-                <div className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full border border-emerald-100/50">
-                  <div className="w-14 h-14 bg-emerald-100 rounded-xl flex items-center justify-center mb-5">
-                    <feature.icon className="w-7 h-7 text-emerald-600" />
+                <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full border border-emerald-100/50">
+                  {/* Image */}
+                  <div className="relative h-52 overflow-hidden">
+                    <Image
+                      src={feature.image}
+                      alt={feature.title}
+                      fill
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                    <div className="absolute top-4 left-4 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                      <feature.icon className="w-6 h-6 text-emerald-600" />
+                    </div>
                   </div>
-                  <h3 className="text-xl font-bold text-emerald-900 mb-3">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </p>
+                  {/* Content */}
+                  <div className="p-6">
+                    <h3 className="text-xl font-bold text-emerald-900 mb-3">
+                      {feature.title}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">
+                      {feature.description}
+                    </p>
+                  </div>
                 </div>
               </FadeInSection>
             ))}
