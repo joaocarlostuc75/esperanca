@@ -1,0 +1,828 @@
+     1→"use client";
+     2→
+     3→import { useState, useEffect, useRef } from "react";
+     4→import { motion, useInView } from "framer-motion";
+     5→import Image from "next/image";
+     6→import {
+     7→  TreePine,
+     8→  Droplets,
+     9→  Home,
+    10→  Flame,
+    11→  MapPin,
+    12→  Phone,
+    13→  Clock,
+    14→  Users,
+    15→  Star,
+    16→  ChevronDown,
+    17→  Sparkles,
+    18→  Heart,
+    19→  Sun,
+    20→  Instagram,
+    21→  Play,
+    22→  Navigation,
+    23→  Shield,
+    24→  ExternalLink,
+    25→  Eye,
+    26→} from "lucide-react";
+    27→import WhatsAppButton from "@/components/whatsapp-button";
+    28→import Lightbox from "@/components/lightbox";
+    29→import CookieConsent from "@/components/cookie-consent";
+    30→
+    31→/* ─── Config ─── */
+    32→const WHATSAPP_NUMBER = "559491062785";
+    33→const PRESET_MSG = encodeURIComponent(
+    34→  "Olá! Vim pelo site do Balneário Esperança e gostaria de saber mais sobre a locação do espaço. Podem me ajudar?"
+    35→);
+    36→const WA_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${PRESET_MSG}`;
+    37→
+    38→const WHATSAPP_MSG_AGENDAR = encodeURIComponent(
+    39→  "Olá! Gostaria de agendar uma visita ao Balneário Esperança. Qual a disponibilidade?"
+    40→);
+    41→const WHATSAPP_MSG_EVENTO = encodeURIComponent(
+    42→  "Olá! Planejo realizar um evento no Balneário Esperança. Poderia me passar mais informações sobre valores e disponibilidade?"
+    43→);
+    44→const WHATSAPP_MSG_DÚVIDAS = encodeURIComponent(
+    45→  "Olá! Tenho algumas dúvidas sobre o Balneário Esperança. Poderia me ajudar?"
+    46→);
+    47→
+    48→const INSTAGRAM_URL = "https://www.instagram.com/balneario_esperanca01/";
+    49→const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/Exmcn8feJiKHfqMV7";
+    50→const INSTA_VIDEO_URL = "https://www.instagram.com/p/DabGK6qPP7X/";
+    51→
+    52→/* ─── Images ─── */
+    53→const GALLERY_IMAGES = [
+    54→  { src: "/images/ambiente.JPEG", alt: "Ambiente do Balneário Esperança" },
+    55→  { src: "/images/area de banho.JPEG", alt: "Área de banho do Balneário" },
+    56→  { src: "/images/quiosque.JPEG", alt: "Quiosque do Balneário Esperança" },
+    57→  { src: "/images/banheiro.JPEG", alt: "Banheiro do Balneário" },
+    58→  { src: "/images/natureza.JPEG", alt: "Natureza ao redor do Balneário" },
+    59→];
+    60→
+    61→/* ─── Features ─── */
+    62→const FEATURES = [
+    63→  {
+    64→    icon: Droplets,
+    65→    title: "Área de Banho",
+    66→    image: "/images/diferenciais/area-banho.jpg",
+    67→    description:
+    68→      "Piscina natural e área de banho com águas cristalinas, perfeita para relaxar e se refrescar nos dias quentes, cercada pela natureza exuberante.",
+    69→  },
+    70→  {
+    71→    icon: Home,
+    72→    title: "Quiosques",
+    73→    image: "/images/diferenciais/quiosques.jpg",
+    74→    description:
+    75→      "Quiosques amplos e bem estruturados, ideais para reunir família e amigos em um ambiente agradável ao ar livre com sombra e conforto.",
+    76→  },
+    77→  {
+    78→    icon: Home,
+    79→    title: "Banheiros Limpos",
+    80→    image: "/images/diferenciais/banheiros.jpg",
+    81→    description:
+    82→      "Banheiros completos e sempre limpos, com estrutura adequada para garantir conforto e bem-estar a todos os visitantes do balneário.",
+    83→  },
+    84→  {
+    85→    icon: TreePine,
+    86→    title: "Contato com a Natureza",
+    87→    image: "/images/diferenciais/natureza.jpg",
+    88→    description:
+    89→      "Ampla área verde com árvores nativas e paisagem preservada, proporcionando uma experiência única de tranquilidade em harmonia com o meio ambiente.",
+    90→  },
+    91→  {
+    92→    icon: Users,
+    93→    title: "Espaço para Eventos",
+    94→    image: "/images/diferenciais/eventos.jpg",
+    95→    description:
+    96→      "Área ampla para realização de festas, eventos corporativos, reuniões familiares e comemorações especiais, com capacidade para grandes grupos.",
+    97→  },
+    98→  {
+    99→    icon: Sun,
+   100→    title: "Lazer ao Ar Livre",
+   101→    image: "/images/diferenciais/lazer.jpg",
+   102→    description:
+   103→      "Espaços abertos para atividades diversas, jogos, descanso e contemplação da paisagem natural, ideais para todas as idades.",
+   104→  },
+   105→];
+   106→
+   107→/* ─── Animation helpers ─── */
+   108→function FadeInSection({
+   109→  children,
+   110→  className = "",
+   111→  delay = 0,
+   112→}: {
+   113→  children: React.ReactNode;
+   114→  className?: string;
+   115→  delay?: number;
+   116→}) {
+   117→  const ref = useRef<HTMLDivElement>(null);
+   118→  const isInView = useInView(ref, { once: true, margin: "-80px" });
+   119→
+   120→  return (
+   121→    <motion.div
+   122→      ref={ref}
+   123→      initial={{ opacity: 0, y: 40 }}
+   124→      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+   125→      transition={{ duration: 0.7, delay, ease: "easeOut" }}
+   126→      className={className}
+   127→    >
+   128→      {children}
+   129→    </motion.div>
+   130→  );
+   131→}
+   132→
+   133→/* ─── Main Page ─── */
+   134→export default function HomePage() {
+   135→  const [lightboxOpen, setLightboxOpen] = useState(false);
+   136→  const [lightboxIndex, setLightboxIndex] = useState(0);
+   137→  const [navbarSolid, setNavbarSolid] = useState(false);
+   138→  const [videoPlaying, setVideoPlaying] = useState(false);
+   139→
+   140→  useEffect(() => {
+   141→    const handleScroll = () => {
+   142→      setNavbarSolid(window.scrollY > 50);
+   143→    };
+   144→    window.addEventListener("scroll", handleScroll);
+   145→    return () => window.removeEventListener("scroll", handleScroll);
+   146→  }, []);
+   147→
+   148→  const openLightbox = (index: number) => {
+   149→    setLightboxIndex(index);
+   150→    setLightboxOpen(true);
+   151→  };
+   152→
+   153→  return (
+   154→    <div className="min-h-screen flex flex-col">
+   155→      {/* ─── NAVBAR ─── */}
+   156→      <nav
+   157→        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+   158→          navbarSolid
+   159→            ? "bg-emerald-900/95 backdrop-blur-md shadow-lg py-2"
+   160→            : "bg-transparent py-4"
+   161→        }`}
+   162→      >
+   163→        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+   164→          <a href="#inicio" className="flex items-center gap-3 group">
+   165→            <Image
+   166→              src="/images/logotipo.jpg"
+   167→              alt="Logo Balneário Esperança"
+   168→              width={50}
+   169→              height={50}
+   170→              className="rounded-full border-2 border-white/30 group-hover:border-white/70 transition-colors"
+   171→            />
+   172→            <span className="font-bold text-lg text-white">
+   173→              Balneário Esperança
+   174→            </span>
+   175→          </a>
+   176→          <div className="hidden md:flex items-center gap-8">
+   177→            <a
+   178→              href="#inicio"
+   179→              className="text-white/80 hover:text-white transition-colors text-sm font-medium"
+   180→            >
+   181→              Início
+   182→            </a>
+   183→            <a
+   184→              href="#galeria"
+   185→              className="text-white/80 hover:text-white transition-colors text-sm font-medium"
+   186→            >
+   187→              Galeria
+   188→            </a>
+   189→            <a
+   190→              href="#diferenciais"
+   191→              className="text-white/80 hover:text-white transition-colors text-sm font-medium"
+   192→            >
+   193→              Diferenciais
+   194→            </a>
+   195→            <a
+   196→              href="#como-chegar"
+   197→              className="text-white/80 hover:text-white transition-colors text-sm font-medium"
+   198→            >
+   199→              Como Chegar
+   200→            </a>
+   201→            <a
+   202→              href="#localizacao"
+   203→              className="text-white/80 hover:text-white transition-colors text-sm font-medium"
+   204→            >
+   205→              Localização
+   206→            </a>
+   207→            <a
+   208→              href={WA_URL}
+   209→              target="_blank"
+   210→              rel="noopener noreferrer"
+   211→              className="bg-amber-500 hover:bg-amber-600 text-emerald-900 font-semibold px-5 py-2 rounded-full text-sm transition-all hover:scale-105 shadow-lg"
+   212→            >
+   213→              Reservar Agora
+   214→            </a>
+   215→          </div>
+   216→          {/* Mobile CTA */}
+   217→          <a
+   218→            href={WA_URL}
+   219→            target="_blank"
+   220→            rel="noopener noreferrer"
+   221→            className="md:hidden bg-amber-500 hover:bg-amber-600 text-emerald-900 font-semibold px-4 py-2 rounded-full text-sm transition-all shadow-lg"
+   222→          >
+   223→            Reservar
+   224→          </a>
+   225→        </div>
+   226→      </nav>
+   227→
+   228→      {/* ─── HERO ─── */}
+   229→      <section
+   230→        id="inicio"
+   231→        className="relative min-h-screen flex items-center justify-center overflow-hidden"
+   232→      >
+   233→        {/* Background image */}
+   234→        <div className="absolute inset-0">
+   235→          <Image
+   236→            src="/images/ambiente.JPEG"
+   237→            alt="Balneário Esperança"
+   238→            fill
+   239→            className="object-cover"
+   240→            priority
+   241→          />
+   242→          <div className="hero-overlay absolute inset-0" />
+   243→        </div>
+   244→
+   245→        {/* Content */}
+   246→        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
+   247→          <motion.div
+   248→            initial={{ opacity: 0, y: 30 }}
+   249→            animate={{ opacity: 1, y: 0 }}
+   250→            transition={{ duration: 0.8, ease: "easeOut" }}
+   251→          >
+   252→            <div className="flex items-center justify-center gap-2 mb-6">
+   253→              <Sparkles className="w-5 h-5 text-amber-400" />
+   254→              <span className="text-amber-300 font-medium text-sm uppercase tracking-wider">
+   255→                O melhor espaço de lazer da região
+   256→              </span>
+   257→              <Sparkles className="w-5 h-5 text-amber-400" />
+   258→            </div>
+   259→
+   260→            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+   261→              Balneário
+   262→              <span className="block text-emerald-300">Esperança</span>
+   263→            </h1>
+   264→
+   265→            <p className="text-lg sm:text-xl text-white/85 max-w-2xl mx-auto mb-10 leading-relaxed">
+   266→              Um refúgio de paz e natureza para seus momentos mais especiais.
+   267→              Espaço completo para locação de eventos, festas e dias de lazer
+   268→              com toda a família.
+   269→            </p>
+   270→
+   271→            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+   272→              <a
+   273→                href={WA_URL}
+   274→                target="_blank"
+   275→                rel="noopener noreferrer"
+   276→                className="bg-amber-500 hover:bg-amber-600 text-emerald-900 font-bold px-8 py-4 rounded-full text-lg transition-all hover:scale-105 shadow-xl flex items-center gap-2"
+   277→              >
+   278→                <Phone className="w-5 h-5" />
+   279→                Reservar pelo WhatsApp
+   280→              </a>
+   281→              <a
+   282→                href="#galeria"
+   283→                className="border-2 border-white/40 hover:border-white/80 text-white font-medium px-8 py-4 rounded-full text-lg transition-all hover:scale-105 flex items-center gap-2"
+   284→              >
+   285→                Ver Galeria
+   286→                <ChevronDown className="w-5 h-5" />
+   287→              </a>
+   288→            </div>
+   289→          </motion.div>
+   290→
+   291→          {/* Trust badges */}
+   292→          <motion.div
+   293→            initial={{ opacity: 0, y: 20 }}
+   294→            animate={{ opacity: 1, y: 0 }}
+   295→            transition={{ duration: 0.8, delay: 0.4 }}
+   296→            className="mt-16 flex flex-wrap items-center justify-center gap-6 sm:gap-10"
+   297→          >
+   298→            <div className="flex items-center gap-2 text-white/70">
+   299→              <Star className="w-5 h-5 text-amber-400" fill="currentColor" />
+   300→              <span className="text-sm">5.0 Avaliação</span>
+   301→            </div>
+   302→            <div className="flex items-center gap-2 text-white/70">
+   303→              <Users className="w-5 h-5" />
+   304→              <span className="text-sm">Capacidade para Grandes Grupos</span>
+   305→            </div>
+   306→            <div className="flex items-center gap-2 text-white/70">
+   307→              <TreePine className="w-5 h-5" />
+   308→              <span className="text-sm">Área Verde Preservada</span>
+   309→            </div>
+   310→          </motion.div>
+   311→        </div>
+   312→
+   313→        {/* Scroll indicator */}
+   314→        <motion.div
+   315→          className="absolute bottom-8 left-1/2 -translate-x-1/2"
+   316→          animate={{ y: [0, 10, 0] }}
+   317→          transition={{ duration: 2, repeat: Infinity }}
+   318→        >
+   319→          <ChevronDown className="w-8 h-8 text-white/50" />
+   320→        </motion.div>
+   321→      </section>
+   322→
+   323→      {/* ─── GALLERY ─── */}
+   324→      <section id="galeria" className="py-20 sm:py-28 bg-white">
+   325→        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   326→          <FadeInSection className="text-center mb-16">
+   327→            <span className="text-emerald-600 font-semibold text-sm uppercase tracking-wider">
+   328→              Conheça nosso espaço
+   329→            </span>
+   330→            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-emerald-900 mt-3 mb-6">
+   331→              Galeria de Fotos
+   332→            </h2>
+   333→            <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+   334→              Explore as belezas do Balneário Esperança. Nosso espaço foi pensado
+   335→              para proporcionar conforto, tranquilidade e momentos inesquecíveis
+   336→              em contato direto com a natureza.
+   337→            </p>
+   338→          </FadeInSection>
+   339→
+   340→          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+   341→            {GALLERY_IMAGES.map((image, index) => (
+   342→              <FadeInSection
+   343→                key={image.src}
+   344→                delay={index * 0.1}
+   345→                className={
+   346→                  index === 0
+   347→                    ? "sm:col-span-2 lg:col-span-2 sm:row-span-2"
+   348→                    : ""
+   349→                }
+   350→              >
+   351→                <button
+   352→                  onClick={() => openLightbox(index)}
+   353→                  className={`img-zoom relative group rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-shadow w-full ${
+   354→                    index === 0 ? "h-64 sm:h-full" : "h-64"
+   355→                  }`}
+   356→                  aria-label={`Ver ${image.alt}`}
+   357→                >
+   358→                  <Image
+   359→                    src={image.src}
+   360→                    alt={image.alt}
+   361→                    fill
+   362→                    className="object-cover"
+   363→                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+   364→                  />
+   365→                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+   366→                    <div className="text-white">
+   367→                      <p className="font-semibold text-lg">{image.alt}</p>
+   368→                      <p className="text-white/70 text-sm mt-1">
+   369→                        Clique para ampliar
+   370→                      </p>
+   371→                    </div>
+   372→                  </div>
+   373→                </button>
+   374→              </FadeInSection>
+   375→            ))}
+   376→          </div>
+   377→        </div>
+   378→      </section>
+   379→
+   380→      {/* ─── FEATURES / DIFERENCIAIS ─── */}
+   381→      <section id="diferenciais" className="py-20 sm:py-28 bg-emerald-50/50">
+   382→        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   383→          <FadeInSection className="text-center mb-16">
+   384→            <span className="text-emerald-600 font-semibold text-sm uppercase tracking-wider">
+   385→              Por que nos escolher
+   386→            </span>
+   387→            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-emerald-900 mt-3 mb-6">
+   388→              Nossos Diferenciais
+   389→            </h2>
+   390→            <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+   391→              Cada detalhe do Balneário Esperança foi pensado para oferecer a
+   392→              melhor experiência de lazer e convivência com a natureza.
+   393→            </p>
+   394→          </FadeInSection>
+   395→
+   396→          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+   397→            {FEATURES.map((feature, index) => (
+   398→              <FadeInSection key={feature.title} delay={index * 0.08}>
+   399→                <div className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full border border-emerald-100/50">
+   400→                  {/* Image */}
+   401→                  <div className="relative h-52 overflow-hidden">
+   402→                    <Image
+   403→                      src={feature.image}
+   404→                      alt={feature.title}
+   405→                      fill
+   406→                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+   407→                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+   408→                    />
+   409→                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+   410→                    <div className="absolute top-4 left-4 w-12 h-12 bg-white/90 backdrop-blur-sm rounded-xl flex items-center justify-center">
+   411→                      <feature.icon className="w-6 h-6 text-emerald-600" />
+   412→                    </div>
+   413→                  </div>
+   414→                  {/* Content */}
+   415→                  <div className="p-6">
+   416→                    <h3 className="text-xl font-bold text-emerald-900 mb-3">
+   417→                      {feature.title}
+   418→                    </h3>
+   419→                    <p className="text-gray-600 leading-relaxed">
+   420→                      {feature.description}
+   421→                    </p>
+   422→                  </div>
+   423→                </div>
+   424→              </FadeInSection>
+   425→            ))}
+   426→          </div>
+   427→        </div>
+   428→      </section>
+   429→
+   430→      {/* ─── CTA BANNER ─── */}
+   431→      <section className="relative py-20 sm:py-28 overflow-hidden">
+   432→        <div className="absolute inset-0">
+   433→          <Image
+   434→            src="/images/natureza.JPEG"
+   435→            alt="Natureza do Balneário Esperança"
+   436→            fill
+   437→            className="object-cover"
+   438→          />
+   439→          <div className="absolute inset-0 bg-emerald-900/80" />
+   440→        </div>
+   441→        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
+   442→          <FadeInSection>
+   443→            <Heart className="w-10 h-10 text-red-400 mx-auto mb-6" />
+   444→            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-6">
+   445→              Pronto para viver momentos incríveis?
+   446→            </h2>
+   447→            <p className="text-white/80 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
+   448→              Entre em contato agora pelo WhatsApp e garanta a reserva do
+   449→              Balneário Esperança para o seu próximo evento ou dia de lazer.
+   450→              Atendemos rapidamente!
+   451→            </p>
+   452→            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+   453→              <a
+   454→                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG_AGENDAR}`}
+   455→                target="_blank"
+   456→                rel="noopener noreferrer"
+   457→                className="bg-amber-500 hover:bg-amber-600 text-emerald-900 font-bold px-8 py-4 rounded-full text-lg transition-all hover:scale-105 shadow-xl flex items-center gap-2"
+   458→              >
+   459→                <Clock className="w-5 h-5" />
+   460→                Agendar Visita
+   461→              </a>
+   462→              <a
+   463→                href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG_EVENTO}`}
+   464→                target="_blank"
+   465→                rel="noopener noreferrer"
+   466→                className="border-2 border-amber-400 hover:border-amber-300 text-amber-300 hover:text-amber-200 font-medium px-8 py-4 rounded-full text-lg transition-all hover:scale-105 flex items-center gap-2"
+   467→              >
+   468→                <Sparkles className="w-5 h-5" />
+   469→                Planejar Evento
+   470→              </a>
+   471→            </div>
+   472→          </FadeInSection>
+   473→        </div>
+   474→      </section>
+   475→
+   476→      {/* ─── COMO CHEGAR (VIDEO) ─── */}
+   477→      <section id="como-chegar" className="py-20 sm:py-28 bg-white">
+   478→        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   479→          <FadeInSection className="text-center mb-16">
+   480→            <span className="text-emerald-600 font-semibold text-sm uppercase tracking-wider">
+   481→              Veja o trajeto
+   482→            </span>
+   483→            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-emerald-900 mt-3 mb-6">
+   484→              Como Chegar
+   485→            </h2>
+   486→            <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+   487→              Confira o vídeo abaixo com instruções detalhadas de como chegar ao
+   488→              Balneário Esperança. Siga o trajeto e aproveite o melhor da
+   489→              natureza!
+   490→            </p>
+   491→          </FadeInSection>
+   492→
+   493→          <FadeInSection>
+   494→            <div className="max-w-4xl mx-auto">
+   495→              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black">
+   496→                <video
+   497→                  className="w-full aspect-video object-cover"
+   498→                  controls
+   499→                  playsInline
+   500→                  preload="metadata"
+   501→                  poster="/images/natureza.JPEG"
+   502→                  onPlay={() => setVideoPlaying(true)}
+   503→                  onPause={() => setVideoPlaying(false)}
+   504→                >
+   505→                  <source src="/images/como-chegar.mp4" type="video/mp4" />
+   506→                  Seu navegador não suporta a reprodução de vídeo.
+   507→                </video>
+   508→              </div>
+   509→
+   510→              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+   511→                <a
+   512→                  href={GOOGLE_MAPS_URL}
+   513→                  target="_blank"
+   514→                  rel="noopener noreferrer"
+   515→                  className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-full transition-all hover:scale-105 shadow-lg"
+   516→                >
+   517→                  <Navigation className="w-5 h-5" />
+   518→                  Abrir no Google Maps
+   519→                </a>
+   520→                <a
+   521→                  href={INSTA_VIDEO_URL}
+   522→                  target="_blank"
+   523→                  rel="noopener noreferrer"
+   524→                  className="inline-flex items-center gap-2 border-2 border-pink-500 hover:bg-pink-50 text-pink-600 font-semibold px-6 py-3 rounded-full transition-all hover:scale-105"
+   525→                >
+   526→                  <Instagram className="w-5 h-5" />
+   527→                  Ver no Instagram
+   528→                </a>
+   529→              </div>
+   530→            </div>
+   531→          </FadeInSection>
+   532→        </div>
+   533→      </section>
+   534→
+   535→      {/* ─── LOCATION ─── */}
+   536→      <section id="localizacao" className="py-20 sm:py-28 bg-emerald-50/50">
+   537→        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   538→          <FadeInSection className="text-center mb-16">
+   539→            <span className="text-emerald-600 font-semibold text-sm uppercase tracking-wider">
+   540→              Venha nos visitar
+   541→            </span>
+   542→            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-emerald-900 mt-3 mb-6">
+   543→              Localização
+   544→            </h2>
+   545→            <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+   546→              O Balneário Esperança está localizado em um ponto de fácil acesso,
+   547→              rodeado pela natureza. Confira no mapa abaixo como chegar.
+   548→            </p>
+   549→          </FadeInSection>
+   550→
+   551→          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+   552→            <FadeInSection>
+   553→              <div className="rounded-2xl overflow-hidden shadow-xl h-[400px] lg:h-[500px]">
+   554→                <iframe
+   555→                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3947.2!2d-49.5510784!3d-3.5499953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!6m0!7i128!8i0"
+   556→                  width="100%"
+   557→                  height="100%"
+   558→                  style={{ border: 0 }}
+   559→                  allowFullScreen
+   560→                  loading="lazy"
+   561→                  referrerPolicy="no-referrer-when-downgrade"
+   562→                  title="Localização do Balneário Esperança"
+   563→                />
+   564→              </div>
+   565→            </FadeInSection>
+   566→
+   567→            <FadeInSection delay={0.2}>
+   568→              <div className="space-y-6">
+   569→                <div className="flex items-start gap-4 bg-white rounded-xl p-6 shadow-sm">
+   570→                  <div className="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
+   571→                    <MapPin className="w-6 h-6 text-white" />
+   572→                  </div>
+   573→                  <div>
+   574→                    <h3 className="font-bold text-emerald-900 text-lg mb-1">
+   575→                      Endereço
+   576→                    </h3>
+   577→                    <p className="text-gray-600">
+   578→                      Clique no botão abaixo para abrir a localização completa no
+   579→                      Google Maps com instruções de como chegar.
+   580→                    </p>
+   581→                    <a
+   582→                      href={GOOGLE_MAPS_URL}
+   583→                      target="_blank"
+   584→                      rel="noopener noreferrer"
+   585→                      className="inline-flex items-center gap-2 mt-3 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors"
+   586→                    >
+   587→                      <MapPin className="w-4 h-4" />
+   588→                      Abrir no Google Maps
+   589→                    </a>
+   590→                  </div>
+   591→                </div>
+   592→
+   593→                <div className="flex items-start gap-4 bg-white rounded-xl p-6 shadow-sm">
+   594→                  <div className="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
+   595→                    <Clock className="w-6 h-6 text-white" />
+   596→                  </div>
+   597→                  <div>
+   598→                    <h3 className="font-bold text-emerald-900 text-lg mb-1">
+   599→                      Horário de Funcionamento
+   600→                    </h3>
+   601→                    <p className="text-gray-600">
+   602→                      Nosso espaço está disponível para locação mediante
+   603→                      agendamento prévio. Entre em contato pelo WhatsApp para
+   604→                      verificar disponibilidade de datas.
+   605→                    </p>
+   606→                  </div>
+   607→                </div>
+   608→
+   609→                <div className="flex items-start gap-4 bg-white rounded-xl p-6 shadow-sm">
+   610→                  <div className="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
+   611→                    <Phone className="w-6 h-6 text-white" />
+   612→                  </div>
+   613→                  <div>
+   614→                    <h3 className="font-bold text-emerald-900 text-lg mb-1">
+   615→                      Contato
+   616→                    </h3>
+   617→                    <p className="text-gray-600">
+   618→                      Toda comunicação e agendamento é realizada via WhatsApp para
+   619→                      maior agilidade e praticidade no atendimento.
+   620→                    </p>
+   621→                    <a
+   622→                      href={`https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MSG_DÚVIDAS}`}
+   623→                      target="_blank"
+   624→                      rel="noopener noreferrer"
+   625→                      className="inline-flex items-center gap-2 mt-3 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2 rounded-full text-sm transition-colors"
+   626→                    >
+   627→                      <Phone className="w-4 h-4" />
+   628→                      Falar pelo WhatsApp
+   629→                    </a>
+   630→                  </div>
+   631→                </div>
+   632→              </div>
+   633→            </FadeInSection>
+   634→          </div>
+   635→        </div>
+   636→      </section>
+   637→
+   638→      {/* ─── FOOTER ─── */}
+   639→      <footer className="bg-emerald-900 text-white py-16">
+   640→        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+   641→          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+   642→            {/* Brand */}
+   643→            <div>
+   644→              <div className="flex items-center gap-3 mb-4">
+   645→                <Image
+   646→                  src="/images/logotipo.jpg"
+   647→                  alt="Logo Balneário Esperança"
+   648→                  width={45}
+   649→                  height={45}
+   650→                  className="rounded-full border-2 border-white/30"
+   651→                />
+   652→                <span className="font-bold text-xl">Balneário Esperança</span>
+   653→              </div>
+   654→              <p className="text-white/60 leading-relaxed mb-4">
+   655→                Seu espaço de lazer favorito para eventos, festas e momentos
+   656→                especiais em contato com a natureza.
+   657→              </p>
+   658→              <a
+   659→                href={INSTAGRAM_URL}
+   660→                target="_blank"
+   661→                rel="noopener noreferrer"
+   662→                className="inline-flex items-center gap-2 text-pink-400 hover:text-pink-300 font-medium transition-colors"
+   663→              >
+   664→                <Instagram className="w-5 h-5" />
+   665→                @balneario_esperanca01
+   666→              </a>
+   667→            </div>
+   668→
+   669→            {/* Quick links */}
+   670→            <div>
+   671→              <h4 className="font-bold text-lg mb-4">Links Rápidos</h4>
+   672→              <ul className="space-y-2">
+   673→                <li>
+   674→                  <a
+   675→                    href="#inicio"
+   676→                    className="text-white/60 hover:text-white transition-colors"
+   677→                  >
+   678→                    Início
+   679→                  </a>
+   680→                </li>
+   681→                <li>
+   682→                  <a
+   683→                    href="#galeria"
+   684→                    className="text-white/60 hover:text-white transition-colors"
+   685→                  >
+   686→                    Galeria
+   687→                  </a>
+   688→                </li>
+   689→                <li>
+   690→                  <a
+   691→                    href="#diferenciais"
+   692→                    className="text-white/60 hover:text-white transition-colors"
+   693→                  >
+   694→                    Diferenciais
+   695→                  </a>
+   696→                </li>
+   697→                <li>
+   698→                  <a
+   699→                    href="#como-chegar"
+   700→                    className="text-white/60 hover:text-white transition-colors"
+   701→                  >
+   702→                    Como Chegar
+   703→                  </a>
+   704→                </li>
+   705→                <li>
+   706→                  <a
+   707→                    href="#localizacao"
+   708→                    className="text-white/60 hover:text-white transition-colors"
+   709→                  >
+   710→                    Localização
+   711→                  </a>
+   712→                </li>
+   713→              </ul>
+   714→            </div>
+   715→
+   716→            {/* Contact */}
+   717→            <div>
+   718→              <h4 className="font-bold text-lg mb-4">Reservas</h4>
+   719→              <p className="text-white/60 mb-4 leading-relaxed">
+   720→                Agende sua visita ou reserva pelo WhatsApp. Atendimento rápido e
+   721→                personalizado.
+   722→              </p>
+   723→              <a
+   724→                href={WA_URL}
+   725→                target="_blank"
+   726→                rel="noopener noreferrer"
+   727→                className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-emerald-900 font-bold px-6 py-3 rounded-full transition-all hover:scale-105"
+   728→              >
+   729→                <Phone className="w-5 h-5" />
+   730→                WhatsApp
+   731→              </a>
+   732→            </div>
+   733→          </div>
+   734→
+   735→          {/* LGPD + Developer credit */}
+   736→          <div className="border-t border-white/10 pt-8">
+   737→            <div className="flex flex-col items-center gap-4 text-center">
+   738→              {/* LGPD compliance links */}
+   739→              <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-white/40">
+   740→                <div className="flex items-center gap-1">
+   741→                  <Shield className="w-3.5 h-3.5" />
+   742→                  <span>Este site está em conformidade com a LGPD (Lei 13.709/2018)</span>
+   743→                </div>
+   744→              </div>
+   745→              <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-white/40">
+   746→                <a
+   747→                  href="#lgpd-privacidade"
+   748→                  className="hover:text-white/60 underline underline-offset-2 transition-colors"
+   749→                  onClick={(e) => {
+   750→                    e.preventDefault();
+   751→                    const el = document.getElementById("lgpd-privacidade");
+   752→                    if (el) {
+   753→                      el.scrollIntoView({ behavior: "smooth" });
+   754→                      el.click();
+   755→                    }
+   756→                  }}
+   757→                >
+   758→                  Política de Privacidade
+   759→                </a>
+   760→                <a
+   761→                  href="#lgpd-termos"
+   762→                  className="hover:text-white/60 underline underline-offset-2 transition-colors"
+   763→                  onClick={(e) => {
+   764→                    e.preventDefault();
+   765→                    const el = document.getElementById("lgpd-termos");
+   766→                    if (el) {
+   767→                      el.scrollIntoView({ behavior: "smooth" });
+   768→                      el.click();
+   769→                    }
+   770→                  }}
+   771→                >
+   772→                  Termos de Uso
+   773→                </a>
+   774→                <a
+   775→                  href="#lgpd-cookies"
+   776→                  className="hover:text-white/60 underline underline-offset-2 transition-colors"
+   777→                  onClick={(e) => {
+   778→                    e.preventDefault();
+   779→                    const el = document.getElementById("lgpd-cookies");
+   780→                    if (el) {
+   781→                      el.scrollIntoView({ behavior: "smooth" });
+   782→                      el.click();
+   783→                    }
+   784→                  }}
+   785→                >
+   786→                  Política de Cookies
+   787→                </a>
+   788→              </div>
+   789→              {/* Copyright + Developer */}
+   790→              <div className="flex flex-col items-center gap-1">
+   791→                <p className="text-white/40 text-xs">
+   792→                  © {new Date().getFullYear()} Balneário Esperança. Todos os
+   793→                  direitos reservados.
+   794→                </p>
+   795→                <p className="text-white/30 text-xs">
+   796→                  Desenvolvido por{" "}
+   797→                  <a
+   798→                    href="https://wa.me/5594981028614?text=Olá! Gostaria de solicitar um orçamento para desenvolvimento de site."
+   799→                    target="_blank"
+   800→                    rel="noopener noreferrer"
+   801→                    className="text-amber-400/70 hover:text-amber-400 font-medium transition-colors"
+   802→                  >
+   803→                    João Carlos
+   804→                  </a>
+   805→                </p>
+   806→              </div>
+   807→            </div>
+   808→          </div>
+   809→        </div>
+   810→      </footer>
+   811→
+   812→      {/* ─── FLOATING WHATSAPP BUTTON ─── */}
+   813→      <WhatsAppButton />
+   814→
+   815→      {/* ─── LIGHTBOX ─── */}
+   816→      <Lightbox
+   817→        images={GALLERY_IMAGES}
+   818→        isOpen={lightboxOpen}
+   819→        initialIndex={lightboxIndex}
+   820→        onClose={() => setLightboxOpen(false)}
+   821→      />
+   822→
+   823→      {/* ─── LGPD COOKIE CONSENT ─── */}
+   824→      <CookieConsent />
+   825→    </div>
+   826→  );
+   827→}
+   828→

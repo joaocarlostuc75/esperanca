@@ -46,7 +46,7 @@ const WHATSAPP_MSG_DÚVIDAS = encodeURIComponent(
 );
 
 const INSTAGRAM_URL = "https://www.instagram.com/balneario_esperanca01/";
-const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/Exmcn8feJiKHfqMV7";
+const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/8PT999TyNtnJv3EU7";
 const INSTA_VIDEO_URL = "https://www.instagram.com/p/DabGK6qPP7X/";
 
 /* ─── Images ─── */
@@ -484,7 +484,7 @@ export default function HomePage() {
               Como Chegar
             </h2>
             <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
-              Confira o vídeo abaixo com instruções detalhadas de como chegar ao
+              Confira o vídeo e as instruções detalhadas abaixo para chegar ao
               Balneário Esperança. Siga o trajeto e aproveite o melhor da
               natureza!
             </p>
@@ -505,6 +505,36 @@ export default function HomePage() {
                   <source src="/images/como-chegar.mp4" type="video/mp4" />
                   Seu navegador não suporta a reprodução de vídeo.
                 </video>
+              </div>
+
+              {/* Roteiro de instruções */}
+              <div className="mt-10 max-w-3xl mx-auto">
+                <div className="bg-emerald-50 rounded-2xl p-6 sm:p-8">
+                  <h3 className="text-xl font-bold text-emerald-900 mb-6 flex items-center gap-2">
+                    <Navigation className="w-6 h-6 text-emerald-600" />
+                    Instruções de Roteiro
+                  </h3>
+                  <ol className="space-y-4">
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold text-sm">1</span>
+                      <p className="text-gray-700 leading-relaxed pt-1">
+                        Pegue a <strong>Rodovia PA-151</strong> no sentido zona rural de Breu Branco.
+                      </p>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold text-sm">2</span>
+                      <p className="text-gray-700 leading-relaxed pt-1">
+                        Após passar pelo <strong>Park Aratera</strong>, pegue a primeira entrada à direita.
+                      </p>
+                    </li>
+                    <li className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-8 h-8 bg-emerald-600 text-white rounded-full flex items-center justify-center font-bold text-sm">3</span>
+                      <p className="text-gray-700 leading-relaxed pt-1">
+                        Ao acessar a estrada de terra, siga em frente: o Balneário Esperança fica logo após o <strong>Recanto MS</strong>, na segunda porteira à direita.
+                      </p>
+                    </li>
+                  </ol>
+                </div>
               </div>
 
               <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -552,7 +582,7 @@ export default function HomePage() {
             <FadeInSection>
               <div className="rounded-2xl overflow-hidden shadow-xl h-[400px] lg:h-[500px]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3947.2!2d-49.5510784!3d-3.5499953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!6m0!7i128!8i0"
+                  src="https://maps.google.com/maps?q=-3.5499953,-49.5510784&z=16&output=embed"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -744,44 +774,20 @@ export default function HomePage() {
               </div>
               <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-white/40">
                 <a
-                  href="#lgpd-privacidade"
+                  href="/politica-de-privacidade"
                   className="hover:text-white/60 underline underline-offset-2 transition-colors"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const el = document.getElementById("lgpd-privacidade");
-                    if (el) {
-                      el.scrollIntoView({ behavior: "smooth" });
-                      el.click();
-                    }
-                  }}
                 >
                   Política de Privacidade
                 </a>
                 <a
-                  href="#lgpd-termos"
+                  href="/termos-de-uso"
                   className="hover:text-white/60 underline underline-offset-2 transition-colors"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const el = document.getElementById("lgpd-termos");
-                    if (el) {
-                      el.scrollIntoView({ behavior: "smooth" });
-                      el.click();
-                    }
-                  }}
                 >
                   Termos de Uso
                 </a>
                 <a
-                  href="#lgpd-cookies"
+                  href="/politica-de-cookies"
                   className="hover:text-white/60 underline underline-offset-2 transition-colors"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    const el = document.getElementById("lgpd-cookies");
-                    if (el) {
-                      el.scrollIntoView({ behavior: "smooth" });
-                      el.click();
-                    }
-                  }}
                 >
                   Política de Cookies
                 </a>
