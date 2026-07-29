@@ -13,6 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://balneario-esperanca.vercel.app"),
   title: "Balneário Esperança | Espaço de Lazer para Locação",
   description:
     "Balneário Esperança - O melhor espaço de lazer para eventos, festas e dias de descanso em contato com a natureza. Área de banho, quiosques, banheiros e muito mais. Reserve pelo WhatsApp!",
@@ -37,7 +38,7 @@ export const metadata: Metadata = {
     description:
       "Descubra o melhor espaço de lazer para seus eventos e momentos de descanso. Reserve agora pelo WhatsApp!",
     type: "website",
-    images: ["/images/ambiente.JPEG"],
+    images: ["/images/ambiente.webp"],
   },
 };
 

@@ -51,11 +51,11 @@ const INSTA_VIDEO_URL = "https://www.instagram.com/p/DabGK6qPP7X/";
 
 /* ─── Images ─── */
 const GALLERY_IMAGES = [
-  { src: "/images/ambiente.JPEG", alt: "Ambiente do Balneário Esperança" },
-  { src: "/images/area de banho.JPEG", alt: "Área de banho do Balneário" },
-  { src: "/images/quiosque.JPEG", alt: "Quiosque do Balneário Esperança" },
-  { src: "/images/banheiro.JPEG", alt: "Banheiro do Balneário" },
-  { src: "/images/natureza.JPEG", alt: "Natureza ao redor do Balneário" },
+  { src: "/images/ambiente.webp", alt: "Ambiente do Balneário Esperança" },
+  { src: "/images/area-de-banho.webp", alt: "Área de banho do Balneário" },
+  { src: "/images/quiosque.webp", alt: "Quiosque do Balneário Esperança" },
+  { src: "/images/banheiro.webp", alt: "Banheiro do Balneário" },
+  { src: "/images/natureza.webp", alt: "Natureza ao redor do Balneário" },
 ];
 
 /* ─── Features ─── */
@@ -63,42 +63,42 @@ const FEATURES = [
   {
     icon: Droplets,
     title: "Área de Banho",
-    image: "/images/diferenciais/area-banho.jpg",
+    image: "/images/diferenciais/area-banho.webp",
     description:
       "Piscina natural e área de banho com águas cristalinas, perfeita para relaxar e se refrescar nos dias quentes, cercada pela natureza exuberante.",
   },
   {
     icon: Home,
     title: "Quiosques",
-    image: "/images/diferenciais/quiosques.jpg",
+    image: "/images/diferenciais/quiosques.webp",
     description:
       "Quiosques amplos e bem estruturados, ideais para reunir família e amigos em um ambiente agradável ao ar livre com sombra e conforto.",
   },
   {
     icon: Home,
     title: "Banheiros Limpos",
-    image: "/images/diferenciais/banheiros.jpg",
+    image: "/images/diferenciais/banheiros.webp",
     description:
       "Banheiros completos e sempre limpos, com estrutura adequada para garantir conforto e bem-estar a todos os visitantes do balneário.",
   },
   {
     icon: TreePine,
     title: "Contato com a Natureza",
-    image: "/images/diferenciais/natureza.jpg",
+    image: "/images/diferenciais/natureza.webp",
     description:
       "Ampla área verde com árvores nativas e paisagem preservada, proporcionando uma experiência única de tranquilidade em harmonia com o meio ambiente.",
   },
   {
     icon: Users,
     title: "Espaço para Eventos",
-    image: "/images/diferenciais/eventos.jpg",
+    image: "/images/diferenciais/eventos.webp",
     description:
       "Área ampla para realização de festas, eventos corporativos, reuniões familiares e comemorações especiais, com capacidade para grandes grupos.",
   },
   {
     icon: Sun,
     title: "Lazer ao Ar Livre",
-    image: "/images/diferenciais/lazer.jpg",
+    image: "/images/diferenciais/lazer.webp",
     description:
       "Espaços abertos para atividades diversas, jogos, descanso e contemplação da paisagem natural, ideais para todas as idades.",
   },
@@ -233,7 +233,7 @@ export default function HomePage() {
         {/* Background image */}
         <div className="absolute inset-0">
           <Image
-            src="/images/ambiente.JPEG"
+            src="/images/ambiente.webp"
             alt="Balneário Esperança"
             fill
             className="object-cover"
@@ -431,7 +431,7 @@ export default function HomePage() {
       <section className="relative py-20 sm:py-28 overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/images/natureza.JPEG"
+            src="/images/natureza.webp"
             alt="Natureza do Balneário Esperança"
             fill
             className="object-cover"
@@ -498,7 +498,7 @@ export default function HomePage() {
                   controls
                   playsInline
                   preload="metadata"
-                  poster="/images/natureza.JPEG"
+                  poster="/images/natureza.webp"
                   onPlay={() => setVideoPlaying(true)}
                   onPause={() => setVideoPlaying(false)}
                 >
