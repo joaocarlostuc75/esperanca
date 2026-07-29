@@ -33,6 +33,10 @@ yarn-error.log*
 # env files (can opt-in for committing if needed)
 .env*
 
+# Editor
+.vscode/
+.idea/
+
 # vercel
 .vercel
 
@@ -50,5 +54,13 @@ test
 prompt
 
 server.log
+
 # Skills directory
 /skills/
+
+# Tool results & temp files
+/tool-results/
+/maps_data.json
+/download/test-*.png
+/download/screenshot-*.png
+/upload/
