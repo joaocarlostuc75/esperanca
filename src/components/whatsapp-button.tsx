@@ -4,11 +4,10 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { MessageCircle, X } from "lucide-react";
 
-const WHATSAPP_NUMBER = "5500000000000";
-const PRESET_MESSAGE =
-  encodeURIComponent(
-    "Olá! Vim pelo site do Balneário Esperança e gostaria de saber mais sobre a locação do espaço. Podem me ajudar?"
-  );
+const WHATSAPP_NUMBER = "559491062785";
+const PRESET_MESSAGE = encodeURIComponent(
+  "Olá! Vim pelo site do Balneário Esperança e gostaria de saber mais sobre a locação do espaço. Podem me ajudar?"
+);
 const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${PRESET_MESSAGE}`;
 
 export default function WhatsAppButton() {

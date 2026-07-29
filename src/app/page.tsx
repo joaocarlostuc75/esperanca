@@ -17,12 +17,19 @@ import {
   Sparkles,
   Heart,
   Sun,
+  Instagram,
+  Play,
+  Navigation,
+  Shield,
+  ExternalLink,
+  Eye,
 } from "lucide-react";
 import WhatsAppButton from "@/components/whatsapp-button";
 import Lightbox from "@/components/lightbox";
+import CookieConsent from "@/components/cookie-consent";
 
 /* ─── Config ─── */
-const WHATSAPP_NUMBER = "5500000000000";
+const WHATSAPP_NUMBER = "559491062785";
 const PRESET_MSG = encodeURIComponent(
   "Olá! Vim pelo site do Balneário Esperança e gostaria de saber mais sobre a locação do espaço. Podem me ajudar?"
 );
@@ -37,6 +44,10 @@ const WHATSAPP_MSG_EVENTO = encodeURIComponent(
 const WHATSAPP_MSG_DÚVIDAS = encodeURIComponent(
   "Olá! Tenho algumas dúvidas sobre o Balneário Esperança. Poderia me ajudar?"
 );
+
+const INSTAGRAM_URL = "https://www.instagram.com/balneario_esperanca01/";
+const GOOGLE_MAPS_URL = "https://maps.app.goo.gl/Exmcn8feJiKHfqMV7";
+const INSTA_VIDEO_URL = "https://www.instagram.com/p/DabGK6qPP7X/";
 
 /* ─── Images ─── */
 const GALLERY_IMAGES = [
@@ -56,10 +67,10 @@ const FEATURES = [
       "Piscina natural e área de banho com águas cristalinas, perfeita para relaxar e se refrescar nos dias quentes, cercada pela natureza exuberante.",
   },
   {
-    icon: Flame,
-    title: "Quiosques Equipados",
+    icon: Home,
+    title: "Quiosques",
     description:
-      "Quiosques amplos e bem equipados com churrasqueira, mesa e bancada, ideais para reunir família e amigos em um ambiente agradável ao ar livre.",
+      "Quiosques amplos e bem estruturados, ideais para reunir família e amigos em um ambiente agradável ao ar livre com sombra e conforto.",
   },
   {
     icon: Home,
@@ -118,6 +129,7 @@ export default function HomePage() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [navbarSolid, setNavbarSolid] = useState(false);
+  const [videoPlaying, setVideoPlaying] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -151,11 +163,7 @@ export default function HomePage() {
               height={50}
               className="rounded-full border-2 border-white/30 group-hover:border-white/70 transition-colors"
             />
-            <span
-              className={`font-bold text-lg transition-colors ${
-                navbarSolid ? "text-white" : "text-white"
-              }`}
-            >
+            <span className="font-bold text-lg text-white">
               Balneário Esperança
             </span>
           </a>
@@ -177,6 +185,12 @@ export default function HomePage() {
               className="text-white/80 hover:text-white transition-colors text-sm font-medium"
             >
               Diferenciais
+            </a>
+            <a
+              href="#como-chegar"
+              className="text-white/80 hover:text-white transition-colors text-sm font-medium"
+            >
+              Como Chegar
             </a>
             <a
               href="#localizacao"
@@ -413,7 +427,7 @@ export default function HomePage() {
             <p className="text-white/80 text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
               Entre em contato agora pelo WhatsApp e garanta a reserva do
               Balneário Esperança para o seu próximo evento ou dia de lazer.
-              Atendemosrapidamente!
+              Atendemos rapidamente!
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <a
@@ -439,8 +453,67 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* ─── COMO CHEGAR (VIDEO) ─── */}
+      <section id="como-chegar" className="py-20 sm:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <FadeInSection className="text-center mb-16">
+            <span className="text-emerald-600 font-semibold text-sm uppercase tracking-wider">
+              Veja o trajeto
+            </span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-emerald-900 mt-3 mb-6">
+              Como Chegar
+            </h2>
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+              Confira o vídeo abaixo com instruções detalhadas de como chegar ao
+              Balneário Esperança. Siga o trajeto e aproveite o melhor da
+              natureza!
+            </p>
+          </FadeInSection>
+
+          <FadeInSection>
+            <div className="max-w-4xl mx-auto">
+              <div className="relative rounded-2xl overflow-hidden shadow-2xl bg-black">
+                <video
+                  className="w-full aspect-video object-cover"
+                  controls
+                  playsInline
+                  preload="metadata"
+                  poster="/images/natureza.JPEG"
+                  onPlay={() => setVideoPlaying(true)}
+                  onPause={() => setVideoPlaying(false)}
+                >
+                  <source src="/images/como-chegar.mp4" type="video/mp4" />
+                  Seu navegador não suporta a reprodução de vídeo.
+                </video>
+              </div>
+
+              <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a
+                  href={GOOGLE_MAPS_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-6 py-3 rounded-full transition-all hover:scale-105 shadow-lg"
+                >
+                  <Navigation className="w-5 h-5" />
+                  Abrir no Google Maps
+                </a>
+                <a
+                  href={INSTA_VIDEO_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border-2 border-pink-500 hover:bg-pink-50 text-pink-600 font-semibold px-6 py-3 rounded-full transition-all hover:scale-105"
+                >
+                  <Instagram className="w-5 h-5" />
+                  Ver no Instagram
+                </a>
+              </div>
+            </div>
+          </FadeInSection>
+        </div>
+      </section>
+
       {/* ─── LOCATION ─── */}
-      <section id="localizacao" className="py-20 sm:py-28 bg-white">
+      <section id="localizacao" className="py-20 sm:py-28 bg-emerald-50/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <FadeInSection className="text-center mb-16">
             <span className="text-emerald-600 font-semibold text-sm uppercase tracking-wider">
@@ -459,7 +532,7 @@ export default function HomePage() {
             <FadeInSection>
               <div className="rounded-2xl overflow-hidden shadow-xl h-[400px] lg:h-[500px]">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3950.0!2d-38.0!3d-3.7!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zM8KwNDInMDAuMCJTIDM4wrAwMCcwMC4wIlc!5e0!3m2!1spt-BR!2sbr!4v1700000000000!5m2!1spt-BR!2sbr"
+                  src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3947.2!2d-49.5510784!3d-3.5499953!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1spt-BR!2sbr!6m0!7i128!8i0"
                   width="100%"
                   height="100%"
                   style={{ border: 0 }}
@@ -473,7 +546,7 @@ export default function HomePage() {
 
             <FadeInSection delay={0.2}>
               <div className="space-y-6">
-                <div className="flex items-start gap-4 bg-emerald-50 rounded-xl p-6">
+                <div className="flex items-start gap-4 bg-white rounded-xl p-6 shadow-sm">
                   <div className="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <MapPin className="w-6 h-6 text-white" />
                   </div>
@@ -486,7 +559,7 @@ export default function HomePage() {
                       Google Maps com instruções de como chegar.
                     </p>
                     <a
-                      href="https://maps.app.goo.gl/Exmcn8feJiKHfqMV7"
+                      href={GOOGLE_MAPS_URL}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-2 mt-3 text-emerald-600 font-semibold hover:text-emerald-700 transition-colors"
@@ -497,7 +570,7 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 bg-emerald-50 rounded-xl p-6">
+                <div className="flex items-start gap-4 bg-white rounded-xl p-6 shadow-sm">
                   <div className="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <Clock className="w-6 h-6 text-white" />
                   </div>
@@ -513,7 +586,7 @@ export default function HomePage() {
                   </div>
                 </div>
 
-                <div className="flex items-start gap-4 bg-emerald-50 rounded-xl p-6">
+                <div className="flex items-start gap-4 bg-white rounded-xl p-6 shadow-sm">
                   <div className="w-12 h-12 bg-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <Phone className="w-6 h-6 text-white" />
                   </div>
@@ -558,10 +631,19 @@ export default function HomePage() {
                 />
                 <span className="font-bold text-xl">Balneário Esperança</span>
               </div>
-              <p className="text-white/60 leading-relaxed">
+              <p className="text-white/60 leading-relaxed mb-4">
                 Seu espaço de lazer favorito para eventos, festas e momentos
                 especiais em contato com a natureza.
               </p>
+              <a
+                href={INSTAGRAM_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 text-pink-400 hover:text-pink-300 font-medium transition-colors"
+              >
+                <Instagram className="w-5 h-5" />
+                @balneario_esperanca01
+              </a>
             </div>
 
             {/* Quick links */}
@@ -594,6 +676,14 @@ export default function HomePage() {
                 </li>
                 <li>
                   <a
+                    href="#como-chegar"
+                    className="text-white/60 hover:text-white transition-colors"
+                  >
+                    Como Chegar
+                  </a>
+                </li>
+                <li>
+                  <a
                     href="#localizacao"
                     className="text-white/60 hover:text-white transition-colors"
                   >
@@ -622,11 +712,79 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="border-t border-white/10 pt-8 text-center">
-            <p className="text-white/40 text-sm">
-              © {new Date().getFullYear()} Balneário Esperança. Todos os direitos
-              reservados.
-            </p>
+          {/* LGPD + Developer credit */}
+          <div className="border-t border-white/10 pt-8">
+            <div className="flex flex-col items-center gap-4 text-center">
+              {/* LGPD compliance links */}
+              <div className="flex flex-wrap items-center justify-center gap-4 text-xs text-white/40">
+                <div className="flex items-center gap-1">
+                  <Shield className="w-3.5 h-3.5" />
+                  <span>Este site está em conformidade com a LGPD (Lei 13.709/2018)</span>
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center justify-center gap-6 text-xs text-white/40">
+                <a
+                  href="#lgpd-privacidade"
+                  className="hover:text-white/60 underline underline-offset-2 transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById("lgpd-privacidade");
+                    if (el) {
+                      el.scrollIntoView({ behavior: "smooth" });
+                      el.click();
+                    }
+                  }}
+                >
+                  Política de Privacidade
+                </a>
+                <a
+                  href="#lgpd-termos"
+                  className="hover:text-white/60 underline underline-offset-2 transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById("lgpd-termos");
+                    if (el) {
+                      el.scrollIntoView({ behavior: "smooth" });
+                      el.click();
+                    }
+                  }}
+                >
+                  Termos de Uso
+                </a>
+                <a
+                  href="#lgpd-cookies"
+                  className="hover:text-white/60 underline underline-offset-2 transition-colors"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    const el = document.getElementById("lgpd-cookies");
+                    if (el) {
+                      el.scrollIntoView({ behavior: "smooth" });
+                      el.click();
+                    }
+                  }}
+                >
+                  Política de Cookies
+                </a>
+              </div>
+              {/* Copyright + Developer */}
+              <div className="flex flex-col items-center gap-1">
+                <p className="text-white/40 text-xs">
+                  © {new Date().getFullYear()} Balneário Esperança. Todos os
+                  direitos reservados.
+                </p>
+                <p className="text-white/30 text-xs">
+                  Desenvolvido por{" "}
+                  <a
+                    href="https://wa.me/5594981028614?text=Olá! Gostaria de solicitar um orçamento para desenvolvimento de site."
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-amber-400/70 hover:text-amber-400 font-medium transition-colors"
+                  >
+                    João Carlos
+                  </a>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </footer>
@@ -641,6 +799,9 @@ export default function HomePage() {
         initialIndex={lightboxIndex}
         onClose={() => setLightboxOpen(false)}
       />
+
+      {/* ─── LGPD COOKIE CONSENT ─── */}
+      <CookieConsent />
     </div>
   );
 }
