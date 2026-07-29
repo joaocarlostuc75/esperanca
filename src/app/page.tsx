@@ -7,7 +7,6 @@ import {
   TreePine,
   Droplets,
   Home,
-  Flame,
   MapPin,
   Phone,
   Clock,
@@ -21,8 +20,6 @@ import {
   Play,
   Navigation,
   Shield,
-  ExternalLink,
-  Eye,
 } from "lucide-react";
 import WhatsAppButton from "@/components/whatsapp-button";
 import Lightbox from "@/components/lightbox";
